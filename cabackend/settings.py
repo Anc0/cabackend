@@ -133,6 +133,16 @@ STATIC_ROOT = os.path.join(PROJECT_DIR, '../static/')
 STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 
+# Mqtt subscriber settigns
+MQTT_CLIENT_ID = 'cabackend'
+MQTT_HOST_IP = 'localhost'
+MQTT_HOST_PORT = 1883
+MQTT_KEEPALIVE = 60
+MQTT_TOPIC = 'cabackend/#'
+MQTT_QOS = 0
+MQTT_PERSISTENT = True
+MQTT_RETRY_FIRST_CONNECTION = False
+
 # Import local settings
 try:
     from .local_settings import *
