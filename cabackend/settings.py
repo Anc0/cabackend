@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'pbjdukkxg4y0egf^)ux$+ha$m2nbthot5hii=ued806+i@6k%e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -37,6 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'sensors',
+    'seances',
+    'mqtt',
 ]
 
 MIDDLEWARE = [
@@ -75,8 +79,12 @@ WSGI_APPLICATION = 'cabackend.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cabackend',
+        'USER': 'cabackend',
+        'PASSWORD': 'cabackend',
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
 
@@ -117,4 +125,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
+PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
+
+MEDIA_ROOT = os.path.join(PROJECT_DIR, '../media')
+STATIC_ROOT = os.path.join(PROJECT_DIR, '../static/')
+
 STATIC_URL = '/static/'
+MEDIA_URL = '/media/'
+
+# Import local settings
+try:
+    from .local_settings import *
+except:
+    pass
