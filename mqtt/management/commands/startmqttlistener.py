@@ -14,5 +14,4 @@ class Command(BaseCommand):
         pass
 
     def handle(self, *args, **options):
-        logger.error("ASADADSFASDF")
         MqttClient().run()

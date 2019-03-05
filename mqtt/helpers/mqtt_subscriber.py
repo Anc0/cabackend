@@ -1,8 +1,14 @@
+from datetime import datetime
 import logging
 
 import paho.mqtt.client as mqtt
+import pytz
 
 from django.conf import settings
+from django.contrib.auth.models import User
+
+from seances.models import Seance
+from sensors.models import Sensor, SensorRecord
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +17,8 @@ class MqttClient:
 
     def __init__(self, client_id=settings.MQTT_CLIENT_ID, host_ip=settings.MQTT_HOST_IP,
                  host_port=settings.MQTT_HOST_PORT, keepalive=settings.MQTT_KEEPALIVE, topic=settings.MQTT_TOPIC,
-                 qos=settings.MQTT_QOS, persistent=settings.MQTT_PERSISTENT, retry_first_connection=settings.MQTT_RETRY_FIRST_CONNECTION):
+                 qos=settings.MQTT_QOS, persistent=settings.MQTT_PERSISTENT,
+                 retry_first_connection=settings.MQTT_RETRY_FIRST_CONNECTION):
 
         self.client_id = client_id
         self.host_ip = host_ip
@@ -21,38 +28,30 @@ class MqttClient:
         self.qos=qos
         self.persistent = persistent
         self.retry_first_connection = retry_first_connection
+        self.seance = None
 
-    @staticmethod
-    def on_connect(mqttc, obj, flags, rc):
-        logger.info("rc: " + str(rc))
+    def on_connect(self, mqttc, obj, flags, rc):
+        logger.info("Connected with result code: {}".format(rc))
 
-    @staticmethod
-    def on_message(mqttc, obj, msg):
-        logger.error("Message received")
-        print("Message received")
-        # topic_name = str(msg._topic).split("'")[1]
-        # try:
-        #     topic = Topic.objects.get(name=topic_name)
-        # except:
-        #     topic = Topic.objects.create(name=topic_name)
-        # logger.info(topic)
-        # topic_record = TopicRecord(value=float(str(msg.payload).split("'")[1]), topic=topic)
-        # topic_record.save()
-        # topic.set_last_record(topic_record)
+    def on_message(self, mqttc, obj, msg):
+        logger.info("Message received")
 
-    @staticmethod
-    def on_subscribe(mqttc, obj, mid, granted_qos):
-        logger.info("Subscribed: " + str(mid) + " " + str(granted_qos))
+        topic = msg.topic.split("/")[1]
 
-    @staticmethod
-    def on_log(mqttc, obj, level, string):
-        logger.info(string)
+        if topic == 'activate':
+            value = str(msg.payload)
+            self.initialize_seance(value)
+        elif topic == 'deactivate':
+            value = str(msg.payload)
+            self.complete_seance()
+        else:
+            value = float(msg.payload)
+            self.save_record(topic, value)
+
+    def on_subscribe(self, mqttc, obj, mid, granted_qos):
+        logger.info("Subscribed to {}:{} as {}.".format(self.host_ip, self.host_port, self.client_id))
 
     def run(self):
-        logger.error("ASDFASDFASDFASDFADSF")
-        # If you want to use a specific client id, use
-        # but note that the client id must be unique on the broker. Leaving the client
-        # id parameter empty will generate a random id for you.
         mqttc = mqtt.Client(self.client_id, clean_session=self.persistent)
 
         mqttc.on_message = self.on_message
@@ -64,3 +63,40 @@ class MqttClient:
 
         mqttc.loop_forever(retry_first_connection=self.retry_first_connection)
         logger.error("Mqtt subscriber disconnected,")
+
+    @staticmethod
+    def initialize_seance(username):
+        """
+        Start new seance.
+        """
+        logger.info("Initializing seance...")
+        user = User.objects.get(username=username)
+        logger.info(Seance(user=user).save())
+        logger.info("Seance initialized.")
+
+    def complete_seance(self):
+        """
+        Finish seance.
+        """
+        pass
+
+    def save_record(self, topic, value):
+        """
+        Retrieve sensor from topic and create new sensor record with value.
+        """
+        logger.info("Saving sensor record...")
+        timestamp = datetime.now(tz=pytz.UTC)
+
+        sensor, created = Sensor.objects.get_or_create(topic=topic)
+
+        if created:
+            logger.info("New sensor created.")
+        else:
+            logger.info("Using sensor {}.".format(sensor.name))
+
+        result = SensorRecord(sensor=sensor, seance=self.seance, value=value, timestamp=timestamp).save()
+
+        if result:
+            logger.info("Sensor record saved.")
+        else:
+            logger.error("Something went wrong when saving sensor record.")
