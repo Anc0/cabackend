@@ -1,0 +1,10 @@
+[program:cabackend-mqtt-worker]
+directory=/home/andraz/Projects/cabackend/
+command=/home/andraz/.virtualenvs/cabackend/bin/python manage.py startmqttlistener
+
+user=andraz
+autostart=true
+autorestart=true
+
+stdout_logfile=/var/log/supervisor/cabackend-mqtt-worker-stdout.log
+stderr_logfile=/var/log/supervisor/cabackend-mqtt-worker-stderr.log
