@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_extensions',
+
     'sensors',
     'seances',
     'mqtt',
@@ -142,6 +144,9 @@ MQTT_TOPIC = 'cabackend/#'
 MQTT_QOS = 0
 MQTT_PERSISTENT = True
 MQTT_RETRY_FIRST_CONNECTION = False
+
+# Always use IPython for shell_plus
+SHELL_PLUS = "ipython"
 
 # Import local settings
 try:

@@ -49,5 +49,5 @@ class SensorRecord(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "Value: {}, from sensor {}, at {}".format(self.value, self.sensor.name,
+        return "Value: {}, from sensor {}, at {}".format(self.value, self.sensor.topic,
                                                          self.timestamp.strftime("%Y-%m-%d %H:%M:%S"))

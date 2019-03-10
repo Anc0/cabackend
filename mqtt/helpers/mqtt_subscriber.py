@@ -33,25 +33,99 @@ class MqttClient:
     def on_connect(self, mqttc, obj, flags, rc):
         logger.info("Connected with result code: {}".format(rc))
 
+    def on_subscribe(self, mqttc, obj, mid, granted_qos):
+        logger.info("Subscribed to {}:{} as {}.".format(self.host_ip, self.host_port, self.client_id))
+
     def on_message(self, mqttc, obj, msg):
-        logger.info("Message received")
+        """
+        Handle received messages - there are 2 special topics that respectively start (activate) and end (deactivate) a
+        seance. Otherwise if there is an active seance, save the received message with the topic name representing the
+        sensor sending the data.
+        """
+        logger.info("########## Message received ##########")
 
         topic = msg.topic.split("/")[1]
 
         if topic == 'activate':
-            value = str(msg.payload)
-            self.initialize_seance(value)
+            user_id = str(msg.payload)
+            self.initialize_seance(user_id)
         elif topic == 'deactivate':
-            value = str(msg.payload)
             self.complete_seance()
         else:
-            value = float(msg.payload)
-            self.save_record(topic, value)
+            if self.seance:
+                value = float(msg.payload)
+                self.save_record(topic, value)
+            else:
+                logger.error("Recording sensor record for sensor {} outside of an active seance.".format(topic))
 
-    def on_subscribe(self, mqttc, obj, mid, granted_qos):
-        logger.info("Subscribed to {}:{} as {}.".format(self.host_ip, self.host_port, self.client_id))
+        logger.info("######################################")
+
+    def initialize_seance(self, user_id):
+        """
+        Start new seance.
+        """
+        logger.info("Initializing seance...")
+        try:
+            # TODO: fetch user via user id, that is linked to NFC tag
+            user = User.objects.get(username='cabackend')
+
+            seance = Seance(user=user, start=datetime.now(tz=pytz.UTC))
+            seance.save()
+
+            self.seance = seance
+
+            logger.info("Seance initialized.")
+        except Exception as e:
+            logger.error(e)
+
+    def complete_seance(self):
+        """
+        Finish seance.
+        """
+        try:
+            logger.info("Deactivating seance {}...".format(self.seance))
+
+            if not self.seance:
+                logger.error("No active seance.")
+                return
+
+            self.seance.end_seance()
+            self.seance = None
+
+            logger.info("Seance deactivated.")
+        except Exception as e:
+            logger.error(e)
+
+    def save_record(self, topic, value):
+        """
+        Retrieve sensor from topic and create new sensor record with value.
+        """
+        try:
+            logger.info("Saving sensor record...")
+            timestamp = datetime.now(tz=pytz.UTC)
+
+            sensor, created = Sensor.objects.get_or_create(topic=topic)
+
+            if created:
+                logger.info("New sensor created.")
+            else:
+                logger.info("Using sensor {}.".format(sensor.topic))
+
+            sensor_record = SensorRecord(sensor=sensor, seance=self.seance, value=value, timestamp=timestamp)
+            sensor_record.save()
+
+            if sensor_record.id:
+                logger.info("Sensor record saved.")
+            else:
+                logger.error("Something went wrong when saving sensor record.")
+
+        except Exception as e:
+            logger.error(e)
 
     def run(self):
+        """
+        Initialize the mqtt client, set callbacks, subscribe to the topic on broker and run indefinitely.
+        """
         mqttc = mqtt.Client(self.client_id, clean_session=self.persistent)
 
         mqttc.on_message = self.on_message
@@ -62,41 +136,7 @@ class MqttClient:
         mqttc.subscribe(self.topic, self.qos)
 
         mqttc.loop_forever(retry_first_connection=self.retry_first_connection)
+
         logger.error("Mqtt subscriber disconnected,")
-
-    @staticmethod
-    def initialize_seance(username):
-        """
-        Start new seance.
-        """
-        logger.info("Initializing seance...")
-        user = User.objects.get(username=username)
-        logger.info(Seance(user=user).save())
-        logger.info("Seance initialized.")
-
-    def complete_seance(self):
-        """
-        Finish seance.
-        """
-        pass
-
-    def save_record(self, topic, value):
-        """
-        Retrieve sensor from topic and create new sensor record with value.
-        """
-        logger.info("Saving sensor record...")
-        timestamp = datetime.now(tz=pytz.UTC)
-
-        sensor, created = Sensor.objects.get_or_create(topic=topic)
-
-        if created:
-            logger.info("New sensor created.")
-        else:
-            logger.info("Using sensor {}.".format(sensor.name))
-
-        result = SensorRecord(sensor=sensor, seance=self.seance, value=value, timestamp=timestamp).save()
-
-        if result:
-            logger.info("Sensor record saved.")
-        else:
-            logger.error("Something went wrong when saving sensor record.")
+        if self.seance:
+            self.complete_seance()

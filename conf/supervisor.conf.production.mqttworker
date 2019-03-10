@@ -1,0 +1,10 @@
+[program:cabackend-mqtt-worker]
+directory=
+command=
+
+user=cabackend
+autostart=true
+autorestart=true
+
+stdout_logfile=/var/log/supervisor/cabackend-mqtt-worker-stdout.log
+stderr_logfile=/var/log/supervisor/cabackend-mqtt-worker-stderr.log
