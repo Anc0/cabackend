@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'sensors',
     'seances',
     'mqtt',
+    'users',
 ]
 
 MIDDLEWARE = [

@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 
 from seances.models import Seance
 from sensors.models import Sensor, SensorRecord
+from users.models import UserProfile
 
 logger = logging.getLogger(__name__)
 
@@ -60,14 +61,14 @@ class MqttClient:
 
         logger.info("######################################")
 
-    def initialize_seance(self, user_id):
+    def initialize_seance(self, rfid):
         """
         Start new seance.
         """
         logger.info("Initializing seance...")
         try:
-            # TODO: fetch user via user id, that is linked to NFC tag
-            user = User.objects.get(username='cabackend')
+            # user = UserProfile.objects.get(rfid=rfid).user()
+            user = User.objects.get(username="cabackend")
 
             seance = Seance(user=user, start=datetime.now(tz=pytz.UTC))
             seance.save()
