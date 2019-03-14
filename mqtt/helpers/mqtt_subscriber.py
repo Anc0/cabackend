@@ -48,8 +48,8 @@ class MqttClient:
         topic = msg.topic.split("/")[1]
 
         if topic == 'activate':
-            user_id = str(msg.payload)
-            self.initialize_seance(user_id)
+            user_rfid = str(msg.payload)
+            self.initialize_seance(user_rfid)
         elif topic == 'deactivate':
             self.complete_seance()
         else:
@@ -66,9 +66,9 @@ class MqttClient:
         Start new seance.
         """
         logger.info("Initializing seance...")
+        rfid = rfid.split("'")[1]
         try:
-            # user = UserProfile.objects.get(rfid=rfid).user()
-            user = User.objects.get(username="cabackend")
+            user = UserProfile.objects.get(rfid=rfid).user
 
             seance = Seance(user=user, start=datetime.now(tz=pytz.UTC))
             seance.save()
@@ -76,8 +76,12 @@ class MqttClient:
             self.seance = seance
 
             logger.info("Seance initialized.")
+        except UserProfile.DoesNotExist as e:
+            logger.error("User with rfid {} not found.".format(rfid))
+            logger.info("Seance not initialized.")
         except Exception as e:
             logger.error(e)
+            logger.info("Seance not initialized.")
 
     def complete_seance(self):
         """

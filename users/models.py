@@ -15,4 +15,7 @@ class UserProfile(models.Model):
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+        instance.userprofile.save()
+
+    def __str__(self):
+        return "User profile for user {}".format(self.user.username)
