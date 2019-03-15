@@ -54,8 +54,11 @@ class MqttClient:
             self.complete_seance()
         else:
             if self.seance:
-                value = float(msg.payload)
-                self.save_record(topic, value)
+                try:
+                    value = float(msg.payload)
+                    self.save_record(topic, value)
+                except Exception as e:
+                    logger.error(e)
             else:
                 logger.error("Recording sensor record for sensor {} outside of an active seance.".format(topic))
 
@@ -112,7 +115,7 @@ class MqttClient:
             sensor, created = Sensor.objects.get_or_create(topic=topic)
 
             if created:
-                logger.info("New sensor created.")
+                logger.info("New sensor created ({}).".format(sensor.topic))
             else:
                 logger.info("Using sensor {}.".format(sensor.topic))
 
