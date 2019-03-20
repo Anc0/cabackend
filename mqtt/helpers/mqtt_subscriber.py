@@ -51,7 +51,8 @@ class MqttClient:
             user_rfid = str(msg.payload)
             self.initialize_seance(user_rfid)
         elif topic == 'deactivate':
-            self.complete_seance()
+            user_rfid = str(msg.payload)
+            self.complete_seance(user_rfid)
         else:
             if self.seance:
                 try:
@@ -69,16 +70,24 @@ class MqttClient:
         Start new seance.
         """
         logger.info("Initializing seance...")
+        if self.seance:
+            logger.error("Seance already initiated. Not starting another one.")
+            return
+
         rfid = rfid.split("'")[1]
         try:
             user = UserProfile.objects.get(rfid=rfid).user
+
+            if len(Seance.objects.filter(user=user, active=True)) > 0:
+                logger.error("Seance already initialized. Not starting another one.")
+                return
 
             seance = Seance(user=user, start=datetime.now(tz=pytz.UTC))
             seance.save()
 
             self.seance = seance
 
-            logger.info("Seance initialized.")
+            logger.info("Seance for user {} initialized.".format(user.username))
         except UserProfile.DoesNotExist as e:
             logger.error("User with rfid {} not found.".format(rfid))
             logger.info("Seance not initialized.")
@@ -86,21 +95,24 @@ class MqttClient:
             logger.error(e)
             logger.info("Seance not initialized.")
 
-    def complete_seance(self):
+    def complete_seance(self, rfid):
         """
         Finish seance.
         """
+        rfid = rfid.split("'")[1]
         try:
-            logger.info("Deactivating seance {}...".format(self.seance))
+            user = UserProfile.objects.get(rfid=rfid).user
+            seance = Seance.objects.get(user=user, active=True)
 
-            if not self.seance:
-                logger.error("No active seance.")
-                return
-
-            self.seance.end_seance()
+            logger.info("Deactivating seance {}...".format(seance))
+            seance.end_seance()
             self.seance = None
-
             logger.info("Seance deactivated.")
+
+        except UserProfile.DoesNotExist as e:
+            logger.error("User with rfid {} does not exist.".format(rfid))
+        except Seance.DoesNotExist as e:
+            logger.error("No active seance for user with rfid {}.".format(rfid))
         except Exception as e:
             logger.error(e)
 
