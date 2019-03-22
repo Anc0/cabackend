@@ -12,11 +12,10 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
-from dotenv import load_dotenv
+import dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -28,9 +27,10 @@ SECRET_KEY = 'pbjdukkxg4y0egf^)ux$+ha$m2nbthot5hii=ued806+i@6k%e'
 DEBUG = False
 
 ALLOWED_HOSTS = []
+from .local_settings import DOTENV_PATH
 
 # Load env config
-load_dotenv(verbose=True)
+dotenv.read_dotenv(DOTENV_PATH)
 
 # Application definition
 
