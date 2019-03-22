@@ -211,3 +211,5 @@ fabric.properties
 # Static files
 static/
 
+# Env file
+/cabackend/.env

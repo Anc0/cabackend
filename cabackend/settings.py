@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+from dotenv import load_dotenv
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,6 +29,8 @@ DEBUG = False
 
 ALLOWED_HOSTS = []
 
+# Load env config
+load_dotenv(verbose=True)
 
 # Application definition
 
@@ -85,9 +89,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cabackend',
         'USER': 'cabackend',
-        'PASSWORD': 'cabackend',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'PASSWORD': os.getenv('DB_PASS'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
