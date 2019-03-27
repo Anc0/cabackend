@@ -1,0 +1,10 @@
+[program:cabackend-webapp]
+directory=/home/akrasovec/cabackend/source/
+command=/home/akrasovec/cabackend/env/bin/gunicorn weatherapi.wsgi:application -c /home/akrasovec/cabackend/source/conf/gunicorn.conf.production.py
+
+user=akrasovec
+autostart=true
+autorestart=true
+
+stdout_logfile=/var/log/supervisor/cabackend-webapp-stdout.log
+stderr_logfile=/var/log/supervisor/cabackend-webapp-stderr.log

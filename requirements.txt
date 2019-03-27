@@ -8,6 +8,7 @@ Django==2.1.7
 django-dotenv==1.4.2
 django-extensions==2.1.6
 Fabric3==1.14.post1
+gunicorn==19.9.0
 invoke==1.2.0
 ipython==7.3.0
 ipython-genutils==0.2.0

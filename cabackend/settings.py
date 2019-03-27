@@ -26,7 +26,7 @@ SECRET_KEY = 'pbjdukkxg4y0egf^)ux$+ha$m2nbthot5hii=ued806+i@6k%e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 from .local_settings import DOTENV_PATH
 
 # Load env config
@@ -137,8 +137,8 @@ PROJECT_DIR = os.path.abspath(os.path.dirname(__file__))
 MEDIA_ROOT = os.path.join(PROJECT_DIR, '../media')
 STATIC_ROOT = os.path.join(PROJECT_DIR, '../static/')
 
-STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
+STATIC_URL = '/static/'
 
 # Mqtt subscriber settigns
 MQTT_CLIENT_ID = 'cabackend'

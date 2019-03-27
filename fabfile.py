@@ -16,7 +16,8 @@ def production():
     env.branch = 'master'
     env.requirements = 'requirements.txt'
     env.local_settings = 'conf/conf.production.local_settings.py'
-    env.supervisor_conf_file = 'supervisor.conf.production.mqttworker'
+    env.supervisor_mqtt_file = 'supervisor.conf.production.mqttworker'
+    env.supervisor_webapp_file = 'supervisor.conf.production.webapp'
 
 @task
 def setup(deploy=False, initial=False):
@@ -87,7 +88,8 @@ def install_supervisor():
     Copy the supervisor config to the supervisor conf directory and restart the supervisor with the new config.
     """
     with cd('%(project_folder)s/source/conf' % env):
-        sudo('cp %(supervisor_conf_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
+        sudo('cp %(supervisor_mqtt_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
+        sudo('cp %(supervisor_webapp_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
         sudo('supervisorctl reread')
         sudo('supervisorctl update')
 

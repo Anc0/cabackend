@@ -1,0 +1,12 @@
+server {
+    listen 80;
+    server_name SERVER_DOMAIN_OR_IP;
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/akrasovec/cabackend/source/;
+    }
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/home/django/app-django/app/app.sock;
+    }
+}
