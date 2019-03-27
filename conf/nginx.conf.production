@@ -1,7 +1,7 @@
 
 server {
     listen 80;
-    server_name www.http://e2-iot.maas.garaza.io/;
+    server_name cabackend.e2-iot.maas.garaza.io/;
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
         root /home/akrasovec/cabackend/source/;

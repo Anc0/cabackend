@@ -1,6 +1,6 @@
 [program:cabackend-webapp]
 directory=/home/akrasovec/cabackend/source/
-command=/home/akrasovec/cabackend/env/bin/gunicorn weatherapi.wsgi:application -c /home/akrasovec/cabackend/source/conf/gunicorn.conf.production.py
+command=/home/akrasovec/cabackend/env/bin/gunicorn cabackend.wsgi:application -c /home/akrasovec/cabackend/source/conf/gunicorn.conf.production.py
 
 user=akrasovec
 autostart=true
