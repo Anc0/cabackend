@@ -1,7 +1,6 @@
 from __future__ import with_statement
 
-from fabric.api import sudo, cd, run, settings, require, env, put, local, prefix, task
-from fabric.contrib.files import exists
+from fabric.api import sudo, cd, run, env, put, local, prefix, task
 
 env.user = 'akrasovec'
 
@@ -17,6 +16,7 @@ def production():
     env.branch = 'master'
     env.requirements = 'requirements.txt'
     env.local_settings = 'conf/conf.production.local_settings.py'
+    env.supervisor_conf_file = 'supervisor.conf.production.mqttworker'
 
 @task
 def setup(deploy=False, initial=False):
@@ -32,13 +32,19 @@ def setup(deploy=False, initial=False):
         run('mkdir -p env; virtualenv -p python3 --no-site-packages env;')
         run('mkdir source')
 
+    if deploy:
+        deploy()
+
 @task
 def deploy():
     """
+    Upload project from git, then upload configuration and install requirements.
+    TODO: implement startmqttlistener with supervisor and improve initial setup
     """
-    # upload_tar_from_git()
+    upload_tar_from_git()
     upload_configuration()
-    # install_requirements()
+    install_requirements()
+    install_supervisor()
     # collect_static()
 
 
@@ -74,6 +80,16 @@ def install_requirements():
     with cd('%(project_folder)s/' % env):
         with prefix('source env/bin/activate'):
             run('env/bin/pip install -r %(project_folder)s/source/%(requirements)s' % env)
+
+
+def install_supervisor():
+    """
+    Copy the supervisor config to the supervisor conf directory and restart the supervisor with the new config.
+    """
+    with cd('%(project_folder)s/source/conf' % env):
+        sudo('cp %(supervisor_conf_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
+        sudo('supervisorctl reread')
+        sudo('supervisorctl update')
 
 
 # def collect_static():

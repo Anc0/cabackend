@@ -1,8 +1,8 @@
 [program:cabackend-mqtt-worker]
-directory=
-command=
+directory=/home/akrasovec/cabackend/source/
+command=/home/akrasovec/cabackend/env/bin/python3 manage.py startmqttlistener
 
-user=cabackend
+user=akrasovec
 autostart=true
 autorestart=true
 
