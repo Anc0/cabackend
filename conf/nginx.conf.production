@@ -7,8 +7,6 @@ server {
         listen    [::]:80;
         server_name cabackend.e2-iot.maas.garaza.io;
 
-        access_log  /home/xmarine/weather-api/logs/api.access.log formatted_geo_weather;
-
         # Don't expose hidden files to the web
         location ~ /\. {
                 return 404;
