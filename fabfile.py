@@ -92,6 +92,8 @@ def install_supervisor():
         sudo('cp %(supervisor_webapp_file)s /etc/supervisor/conf.d/startwebapp.conf' % env)
         sudo('supervisorctl reread')
         sudo('supervisorctl update')
+        sudo('supervisorctl restart cabackend-mqtt-worker')
+        sudo('supervisorctl restart cabackend-webapp')
 
 
 # def collect_static():
