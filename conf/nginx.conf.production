@@ -1,12 +1,11 @@
 server {
     listen 80;
-    server_name SERVER_DOMAIN_OR_IP;
+    server_name www.http://e2-iot.maas.garaza.io/;
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
         root /home/akrasovec/cabackend/source/;
     }
     location / {
-        include proxy_params;
-        proxy_pass http://unix:/home/django/app-django/app/app.sock;
+        server 127.0.0.1:8001;
     }
 }

@@ -1,6 +1,7 @@
 from __future__ import with_statement
 
 from fabric.api import sudo, cd, run, env, put, local, prefix, task
+from fabric.contrib.files import exists
 
 env.user = 'akrasovec'
 
@@ -37,7 +38,7 @@ def setup(deploy=False, initial=False):
         deploy()
 
 @task
-def deploy():
+def deploy(nginx=False):
     """
     Upload project from git, then upload configuration and install requirements.
     TODO: implement startmqttlistener with supervisor and improve initial setup
@@ -46,6 +47,8 @@ def deploy():
     upload_configuration()
     install_requirements()
     install_supervisor()
+    if nginx.
+        install_nginx()
     # collect_static()
 
 
@@ -95,6 +98,17 @@ def install_supervisor():
         sudo('supervisorctl restart cabackend-mqtt-worker')
         sudo('supervisorctl restart cabackend-webapp')
 
+
+def install_nginx():
+    """
+    Copy the nginx conf to sites-available and reload the server.
+    """
+    with cd('%(project_folder)s/source/conf/' % env):
+        sudo('cp nginx.conf.production /etc/nginx/sites-available/cabackend.conf')
+        with cd('/etc/nginx/'):
+            if not exists('sites-enabled/cabackend.conf'):
+                sudo('ln -s sites-available/cabackend.conf sites-enabled/cabackend.conf')
+        sudo('/etc/init.d/nginx reload')
 
 # def collect_static():
 #     """Collect static files in its folder"""
