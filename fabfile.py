@@ -47,7 +47,7 @@ def deploy(nginx=False):
     upload_configuration()
     install_requirements()
     install_supervisor()
-    if nginx.
+    if nginx:
         install_nginx()
     # collect_static()
 
