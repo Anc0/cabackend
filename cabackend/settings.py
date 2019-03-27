@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'pbjdukkxg4y0egf^)ux$+ha$m2nbthot5hii=ued806+i@6k%e'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['localhost']
 from .local_settings import DOTENV_PATH
