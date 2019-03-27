@@ -107,7 +107,7 @@ def install_nginx():
         sudo('cp nginx.conf.production /etc/nginx/sites-available/cabackend.conf')
         with cd('/etc/nginx/'):
             if not exists('sites-enabled/cabackend.conf'):
-                sudo('ln -s sites-available/cabackend.conf sites-enabled/cabackend.conf')
+                sudo('ln -s /etc/nginx/sites-available/cabackend.conf sites-enabled/cabackend.conf')
         sudo('/etc/init.d/nginx reload')
 
 # def collect_static():

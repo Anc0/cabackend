@@ -1,3 +1,7 @@
+upstream cabackend_app {
+    server 127.0.0.1:8001;
+}
+
 server {
     listen 80;
     server_name www.http://e2-iot.maas.garaza.io/;
@@ -6,6 +10,5 @@ server {
         root /home/akrasovec/cabackend/source/;
     }
     location / {
-        server 127.0.0.1:8001;
     }
 }
