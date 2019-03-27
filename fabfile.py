@@ -108,7 +108,7 @@ def install_nginx():
         with cd('/etc/nginx/'):
             if not exists('sites-enabled/cabackend.conf'):
                 sudo('ln -s /etc/nginx/sites-available/cabackend.conf sites-enabled/cabackend.conf')
-        sudo('/etc/init.d/nginx reload')
+        sudo('systemctl restart nginx')
 
 # def collect_static():
 #     """Collect static files in its folder"""
