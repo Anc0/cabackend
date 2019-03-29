@@ -26,7 +26,7 @@ SECRET_KEY = 'pbjdukkxg4y0egf^)ux$+ha$m2nbthot5hii=ued806+i@6k%e'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost']
+ALLOWED_HOSTS = ['localhost', 'e2-iot.maas.garaza.io']
 from .local_settings import DOTENV_PATH
 
 # Load env config
