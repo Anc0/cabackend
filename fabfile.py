@@ -56,7 +56,7 @@ def upload_tar_from_git():
     Create a tar archive from the current git branch and upload it.
     """
     # Remove previous files
-    run('rm -r %(project_folder)s/source/*' % env)
+    sudo('rm -r %(project_folder)s/source/*' % env)
     # Create an archive
     local('git archive -o deploy.tar.gz HEAD')
     # Upload the archive to the server
