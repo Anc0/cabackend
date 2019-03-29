@@ -41,7 +41,6 @@ def setup(deploy=False, initial=False):
 def deploy(nginx=False):
     """
     Upload project from git, then upload configuration and install requirements.
-    TODO: implement startmqttlistener with supervisor and improve initial setup
     """
     upload_tar_from_git()
     upload_configuration()
@@ -49,7 +48,7 @@ def deploy(nginx=False):
     install_supervisor()
     if nginx:
         install_nginx()
-    # collect_static()
+    collect_static()
 
 
 def upload_tar_from_git():
@@ -110,9 +109,11 @@ def install_nginx():
                 sudo('ln -s /etc/nginx/sites-available/cabackend.conf sites-enabled/cabackend.conf')
         sudo('systemctl restart nginx')
 
-# def collect_static():
-#     """Collect static files in its folder"""
-#     require('project_name')
-#     with cd('%(path)s/releases/current/%(project_name)s' % env):
-#         with prefix('source %(virtualhost_path)s/bin/activate' % env):
-#             sudo('%(virtualhost_path)s/bin/python manage.py collectstatic --no-input' % env)
+
+def collect_static():
+    """
+    Collect static files in its folder.
+    """
+    with cd('%(project_folder)s/source/' % env):
+        with prefix('source %(project_folder)s/env/bin/activate' % env):
+            sudo('%(project_folder)s/env/bin/python manage.py collectstatic --no-input' % env)
