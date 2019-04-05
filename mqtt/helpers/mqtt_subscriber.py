@@ -9,7 +9,9 @@ from django.contrib.auth.models import User
 
 from seances.models import Seance
 from sensors.models import Sensor, SensorRecord
+from mqtt.tasks import insert_data
 from users.models import UserProfile
+
 
 logger = logging.getLogger(__name__)
 
@@ -57,7 +59,8 @@ class MqttClient:
             if self.seance:
                 try:
                     value = float(msg.payload)
-                    self.save_record(topic, value)
+                    # Insert the data value in the queue
+                    insert_data.delay(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
                 # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:
                     logger.error(e)
@@ -114,32 +117,6 @@ class MqttClient:
             logger.error("User with rfid {} does not exist.".format(rfid))
         except Seance.DoesNotExist as e:
             logger.error("No active seance for user with rfid {}.".format(rfid))
-        except Exception as e:
-            logger.error(e)
-
-    def save_record(self, topic, value):
-        """
-        Retrieve sensor from topic and create new sensor record with value.
-        """
-        try:
-            logger.info("Saving sensor record...")
-            timestamp = datetime.now(tz=pytz.UTC)
-
-            sensor, created = Sensor.objects.get_or_create(topic=topic)
-
-            if created:
-                logger.info("New sensor created ({}).".format(sensor.topic))
-            else:
-                logger.info("Using sensor {}.".format(sensor.topic))
-
-            sensor_record = SensorRecord(sensor=sensor, seance=self.seance, value=value, timestamp=timestamp)
-            sensor_record.save()
-
-            if sensor_record.id:
-                logger.info("Sensor record saved.")
-            else:
-                logger.error("Something went wrong when saving sensor record.")
-
         except Exception as e:
             logger.error(e)
 

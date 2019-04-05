@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'django_extensions',
+    'djcelery',
 
     'sensors',
     'seances',
@@ -152,6 +153,13 @@ MQTT_RETRY_FIRST_CONNECTION = False
 
 # Always use IPython for shell_plus
 SHELL_PLUS = "ipython"
+
+# Celery
+CELERY_TIMEZONE = 'UTC'
+ELERY_ROUTES = {
+    'mqtt.tasks.insert_data': {'queue': 'queue_mqtt_data_management'},
+}
+
 
 # Import local settings
 try:

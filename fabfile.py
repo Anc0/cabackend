@@ -18,6 +18,7 @@ def production():
     env.requirements = 'requirements.txt'
     env.local_settings = 'conf/conf.production.local_settings.py'
     env.supervisor_mqtt_file = 'supervisor.conf.production.mqttworker'
+    env.supervisor_data_file = 'supervisor.conf.production.dataworker'
     env.supervisor_webapp_file = 'supervisor.conf.production.webapp'
 
 @task
@@ -91,10 +92,12 @@ def install_supervisor():
     """
     with cd('%(project_folder)s/source/conf' % env):
         sudo('cp %(supervisor_mqtt_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
+        sudo('cp %(supervisor_data_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
         sudo('cp %(supervisor_webapp_file)s /etc/supervisor/conf.d/startwebapp.conf' % env)
         sudo('supervisorctl reread')
         sudo('supervisorctl update')
         sudo('supervisorctl restart cabackend-mqtt-worker')
+        sudo('supervisorctl restart cabackend-data-worker')
         sudo('supervisorctl restart cabackend-webapp')
 
 
