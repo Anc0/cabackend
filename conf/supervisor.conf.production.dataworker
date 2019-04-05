@@ -1,4 +1,4 @@
-[program:cabackend-mqtt-worker]
+[program:cabackend-data-worker]
 directory=/home/akrasovec/cabackend/source/
 command=/home/akrasovec/cabackend/env/bin/celery worker -A cabackend --concurrency=1 -Q queue_mqtt_data_management
 

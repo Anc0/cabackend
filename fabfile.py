@@ -92,7 +92,7 @@ def install_supervisor():
     """
     with cd('%(project_folder)s/source/conf' % env):
         sudo('cp %(supervisor_mqtt_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
-        sudo('cp %(supervisor_data_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
+        sudo('cp %(supervisor_data_file)s /etc/supervisor/conf.d/startdata.conf' % env)
         sudo('cp %(supervisor_webapp_file)s /etc/supervisor/conf.d/startwebapp.conf' % env)
         sudo('supervisorctl reread')
         sudo('supervisorctl update')
