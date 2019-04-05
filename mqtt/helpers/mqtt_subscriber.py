@@ -58,10 +58,11 @@ class MqttClient:
                 try:
                     value = float(msg.payload)
                     self.save_record(topic, value)
+                # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:
                     logger.error(e)
             else:
-                logger.error("Recording sensor record for sensor {} outside of an active seance.".format(topic))
+                logger.warning("Recording sensor record for sensor {} outside of an active seance.".format(topic))
 
         logger.info("######################################")
 
