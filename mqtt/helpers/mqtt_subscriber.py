@@ -5,10 +5,8 @@ import paho.mqtt.client as mqtt
 import pytz
 
 from django.conf import settings
-from django.contrib.auth.models import User
 
 from seances.models import Seance
-from sensors.models import Sensor, SensorRecord
 from mqtt.tasks import insert_data
 from users.models import UserProfile
 
@@ -28,7 +26,7 @@ class MqttClient:
         self.host_port = host_port
         self.keepalive = keepalive
         self.topic = topic
-        self.qos=qos
+        self.qos = qos
         self.persistent = persistent
         self.retry_first_connection = retry_first_connection
         self.seance = None
@@ -60,7 +58,10 @@ class MqttClient:
                 try:
                     value = float(msg.payload)
                     # Insert the data value in the queue
-                    insert_data.delay(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
+                    if settings.USE_QUEUE:
+                        insert_data.delay(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
+                    else:
+                        insert_data(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
                 # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:
                     logger.error(e)
