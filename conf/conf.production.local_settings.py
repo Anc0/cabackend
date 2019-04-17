@@ -22,7 +22,7 @@ LOGGING = {
     'loggers': {
         '': {
             'handlers': ['console'],
-            'level': 'ERROR'
+            'level': 'INFO'
         },
     },
 }
