@@ -26,5 +26,3 @@ LOGGING = {
         },
     },
 }
-
-USE_QUEUE = False

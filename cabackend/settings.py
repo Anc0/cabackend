@@ -156,7 +156,7 @@ SHELL_PLUS = "ipython"
 
 # Celery
 CELERY_TIMEZONE = 'UTC'
-ELERY_ROUTES = {
+CELERY_ROUTES = {
     'mqtt.tasks.insert_data': {'queue': 'queue_mqtt_data_management'},
 }
 USE_QUEUE = True
