@@ -43,7 +43,7 @@ class MqttClient:
         seance. Otherwise if there is an active seance, save the received message with the topic name representing the
         sensor sending the data.
         """
-        logger.info("########## Message received ##########")
+        # logger.info("########## Message received ##########")
 
         topic = msg.topic.split("/")[1]
 
@@ -68,7 +68,7 @@ class MqttClient:
             else:
                 logger.warning("Recording sensor record for sensor {} outside of an active seance.".format(topic))
 
-        logger.info("######################################")
+        # logger.info("######################################")
 
     def initialize_seance(self, rfid):
         """
