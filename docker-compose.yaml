@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+    db:
+        image: postgres:10.1-alpine
+        environment:
+            - POSTGRES_USER=cabackend
+            - POSTGRES_PASSWORD=cabackend
+        volumes:
+            - postgres_data:/var/lib/postgresql/data/
+
+    mqtt:
+        image: eclipse-mosquitto
+        volumes:
+            - mosquitto_data:/var/lib/mosquitto/data/
+        ports:
+            - 1883:1883
+
+    queue:
+        image: rabbitmq:management
+        environment:
+            - RABBITMQ_DEFAULT_USER=cabackend
+            - RABBITMQ_DEFAULT_PASS=cabackend
+        volumes:
+            - rabbitmq_data:/var/lib/rabbitmq/data/
+        ports:
+            - 15672:15672
+    
+    admin:
+        build: .
+        command: python /code/manage.py runserver 0.0.0.0:8001
+        volumes:
+            - .:/code
+        ports:
+            - 8001:8001
+        depends_on:
+            - db
+
+    listener:
+        build: .
+        command: python /code/manage.py startmqttlistener
+        volumes:
+            - .:/code
+        depends_on:
+            - db
+            - mqtt
+            - queue
+
+volumes:
+    postgres_data:
+    mosquitto_data:
+    rabbitmq_data:

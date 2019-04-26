@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['localhost', 'e2-iot.maas.garaza.io']
 from .local_settings import DOTENV_PATH
 
 # Load env config
-dotenv.read_dotenv(DOTENV_PATH)
+# dotenv.read_dotenv(DOTENV_PATH)
 
 # Application definition
 
@@ -90,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cabackend',
         'USER': 'cabackend',
-        'PASSWORD': os.getenv('DB_PASS'),
-        'HOST': os.getenv('DB_HOST'),
-        'PORT': os.getenv('DB_PORT'),
+        'PASSWORD': 'cabackend',
+        'HOST': 'db',
+        'PORT': '5432',
     }
 }
 
@@ -143,7 +143,7 @@ STATIC_URL = '/static/'
 
 # Mqtt subscriber settigns
 MQTT_CLIENT_ID = 'cabackend'
-MQTT_HOST_IP = 'localhost'
+MQTT_HOST_IP = 'mqtt'
 MQTT_HOST_PORT = 1883
 MQTT_KEEPALIVE = 60
 MQTT_TOPIC = 'cabackend/#'

@@ -7,9 +7,10 @@ from django.conf import settings
 # set the default Django settings module for the 'celery' program.
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cabackend.settings')
 
-BROKER_URL = os.getenv('RABBITMQ_BROKER_URL')
+# BROKER_URL = os.getenv('RABBITMQ_BROKER_URL')
 
-app = Celery('cabackend', broker=BROKER_URL)
+RABBITMQ_BROKER_URL='amqp://cabackend:cabackend@queue:15672'
+app = Celery('cabackend', broker=RABBITMQ_BROKER_URL)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
