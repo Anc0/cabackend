@@ -90,8 +90,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cabackend',
         'USER': 'cabackend',
-        'PASSWORD': 'cabackend',
-        'HOST': 'db',
+        'PASSWORD': 'jfq984alewhfufho38w',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -143,7 +143,7 @@ STATIC_URL = '/static/'
 
 # Mqtt subscriber settigns
 MQTT_CLIENT_ID = 'cabackend'
-MQTT_HOST_IP = 'mqtt'
+MQTT_HOST_IP = 'localhost'
 MQTT_HOST_PORT = 1883
 MQTT_KEEPALIVE = 60
 MQTT_TOPIC = 'cabackend/#'

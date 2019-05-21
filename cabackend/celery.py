@@ -9,7 +9,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cabackend.settings')
 
 # BROKER_URL = os.getenv('RABBITMQ_BROKER_URL')
 
-RABBITMQ_BROKER_URL='amqp://cabackend:cabackend@queue:15672'
+RABBITMQ_BROKER_URL='amqp://cabackend:fq8o34pjouhsgeo9u4iler@localhost:15672'
 app = Celery('cabackend', broker=RABBITMQ_BROKER_URL)
 
 # Using a string here means the worker doesn't have to serialize
