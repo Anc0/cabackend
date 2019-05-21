@@ -159,6 +159,8 @@ CELERY_TIMEZONE = 'UTC'
 CELERY_ROUTES = {
     'mqtt.tasks.insert_data': {'queue': 'queue_mqtt_data_management'},
 }
+CELERYD_PREFETCH_MULTIPLIER = 64
+
 USE_QUEUE = True
 
 # Import local settings
