@@ -90,9 +90,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cabackend',
         'USER': 'cabackend',
-        'PASSWORD': 'cabackend',
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'PASSWORD': os.getenv('DB_PASS'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 
