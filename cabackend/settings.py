@@ -157,7 +157,7 @@ SHELL_PLUS = "ipython"
 # Celery
 CELERY_TIMEZONE = 'UTC'
 CELERY_ROUTES = {
-    'mqtt.tasks.insert_data': {'queue': 'queue_mqtt_data_management'},
+    'mqtt.tasks.insert_data_from_buffer': {'queue': 'queue_mqtt_data_management'},
 }
 CELERYD_PREFETCH_MULTIPLIER = 64
 

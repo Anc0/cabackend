@@ -7,6 +7,7 @@ import pytz
 from django.conf import settings
 
 from mqtt.helpers.cache_management import CacheManagement
+from mqtt.tasks import insert_data_from_buffer
 from seances.models import Seance
 from users.models import UserProfile
 
@@ -45,8 +46,6 @@ class MqttClient:
         seance. Otherwise if there is an active seance, save the received message with the topic name representing the
         sensor sending the data.
         """
-        # logger.info("########## Message received ##########")
-
         topic = msg.topic.split("/")[1]
 
         if topic == 'activate':
@@ -55,19 +54,19 @@ class MqttClient:
         elif topic == 'deactivate':
             user_rfid = str(msg.payload)
             self.complete_seance(user_rfid)
+        elif topic == 'dump':
+            insert_data_from_buffer.delay(self.cache)
         else:
             if self.seance:
                 try:
                     value = float(msg.payload)
-                    # Insert the data value in the csv file
-                    self.cache.save_record(datetime.now(), topic, value, self.seance.id)
+                    # Insert the data value into memory
+                    self.cache.save_record(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
                 # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:
                     logger.error(e)
             else:
                 logger.warning("Recording sensor record for sensor {} outside of an active seance.".format(topic))
-
-        # logger.info("######################################")
 
     def initialize_seance(self, rfid):
         """

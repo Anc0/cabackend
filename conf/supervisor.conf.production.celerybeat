@@ -1,0 +1,10 @@
+[program:cabackend-celery-beat]
+directory=/home/akrasovec/cabackend/source/
+command=/home/akrasovec/cabackend/env/bin/celery -A cabackend beat -S djcelery.schedulers.DatabaseScheduler
+
+user=akrasovec
+autostart=true
+autorestart=true
+
+stdout_logfile=/var/log/supervisor/cabackend-celery-beat-stdout.log
+stderr_logfile=/var/log/supervisor/cabackend-celery-beat-stderr.log
