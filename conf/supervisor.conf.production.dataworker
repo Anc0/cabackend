@@ -1,21 +1,10 @@
-[program:cabackend-data-worker-a]
+[program:cabackend-data-worker]
 directory=/home/akrasovec/cabackend/source/
-command=/home/akrasovec/cabackend/env/bin/celery worker -A cabackend --concurrency=1 -Q queue_mqtt_data_management -n data-worker-a@%%n -Ofair
+command=/home/akrasovec/cabackend/env/bin/celery worker -A cabackend --concurrency=1 -Q queue_mqtt_data_management
 
 user=akrasovec
 autostart=true
 autorestart=true
 
-stdout_logfile=/var/log/supervisor/cabackend-data-worker-a-stdout.log
-stderr_logfile=/var/log/supervisor/cabackend-data-worker-a-stderr.log
-
-[program:cabackend-data-worker-b]
-directory=/home/akrasovec/cabackend/source/
-command=/home/akrasovec/cabackend/env/bin/celery worker -A cabackend --concurrency=1 -Q queue_mqtt_data_management -n data-worker-b@%%n -Ofair
-
-user=akrasovec
-autostart=true
-autorestart=true
-
-stdout_logfile=/var/log/supervisor/cabackend-data-worker-b-stdout.log
-stderr_logfile=/var/log/supervisor/cabackend-data-worker-b-stderr.log
+stdout_logfile=/var/log/supervisor/cabackend-data-worker-stdout.log
+stderr_logfile=/var/log/supervisor/cabackend-data-worker-stderr.log

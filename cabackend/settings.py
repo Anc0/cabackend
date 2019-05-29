@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['localhost', 'e2-iot.maas.garaza.io']
 from .local_settings import DOTENV_PATH
 
 # Load env config
-# dotenv.read_dotenv(DOTENV_PATH)
+dotenv.read_dotenv(DOTENV_PATH)
 
 # Application definition
 
@@ -90,7 +90,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'cabackend',
         'USER': 'cabackend',
-        'PASSWORD': 'jfq984alewhfufho38w',
+        'PASSWORD': 'cabackend',
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -161,7 +161,9 @@ CELERY_ROUTES = {
 }
 CELERYD_PREFETCH_MULTIPLIER = 64
 
-USE_QUEUE = True
+# Cache
+CACHE_FILE = "/home/andraz/Projects/cabackend/mqtt/helpers/cache.csv"
+TMP_CACHE_FILE = "/home/andraz/Projects/cabackend/mqtt/helpers/tmp_cache.csv"
 
 # Import local settings
 try:

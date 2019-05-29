@@ -6,8 +6,8 @@ import pytz
 
 from django.conf import settings
 
+from mqtt.helpers.cache_management import CacheManagement
 from seances.models import Seance
-from mqtt.tasks import insert_data
 from users.models import UserProfile
 
 
@@ -29,6 +29,8 @@ class MqttClient:
         self.qos = qos
         self.persistent = persistent
         self.retry_first_connection = retry_first_connection
+        self.cache = CacheManagement()
+
         self.seance = None
 
     def on_connect(self, mqttc, obj, flags, rc):
@@ -57,11 +59,8 @@ class MqttClient:
             if self.seance:
                 try:
                     value = float(msg.payload)
-                    # Insert the data value in the queue
-                    if settings.USE_QUEUE:
-                        insert_data.delay(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
-                    else:
-                        insert_data(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
+                    # Insert the data value in the csv file
+                    self.cache.save_record(datetime.now(), topic, value, self.seance.id)
                 # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:
                     logger.error(e)
