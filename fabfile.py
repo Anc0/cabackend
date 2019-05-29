@@ -99,8 +99,6 @@ def install_supervisor():
         sudo('supervisorctl restart cabackend-mqtt-worker')
         sudo('supervisorctl restart cabackend-data-worker-a')
         sudo('supervisorctl restart cabackend-data-worker-b')
-        sudo('supervisorctl restart cabackend-data-worker-c')
-        sudo('supervisorctl restart cabackend-data-worker-d')
         sudo('supervisorctl restart cabackend-webapp')
 
 
