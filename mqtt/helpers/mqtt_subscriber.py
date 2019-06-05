@@ -60,7 +60,7 @@ class MqttClient:
             if self.seance:
                 try:
                     value = float(msg.payload)
-                    # Insert the data value into memory
+                    # Insert the data value into ram
                     self.cache.save_record(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
                 # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:

@@ -11,7 +11,7 @@ logger = getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Starts the crawler.'
+    help = 'Deletes all seances and sensor record for given user.'
 
     def add_arguments(self, parser):
         """
