@@ -14,13 +14,11 @@ def insert_data_from_buffer(cache_records):
     """
     Create a list of sensor records from buffer and bulk insert them into the database.
     """
-    logger.info("Inserting sensor records...")
-    records = []
     print("Processing cached records...")
+    records = []
     for record in cache_records:
         # Extract data into separate variables for clarity
         timestamp = record[0]
-        print(timestamp)
         topic = record[1]
         value = record[2]
         seance_id = record[3]
@@ -32,7 +30,7 @@ def insert_data_from_buffer(cache_records):
         records.append(SensorRecord(sensor=sensor, seance=seance, value=value, timestamp=timestamp))
     # Save all SensorRecords at once
     result = SensorRecord.objects.bulk_create(records)
-    print("Inserted {} sensor records.".format(len(result)))
+    print("{} sensor records inserted.".format(len(result)))
 
 
 @shared_task

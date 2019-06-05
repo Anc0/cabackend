@@ -66,8 +66,6 @@ class MqttClient:
                 # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:
                     logger.error(e)
-            else:
-                logger.warning("Recording sensor record for sensor {} outside of an active seance.".format(topic))
 
     def initialize_seance(self, rfid):
         """
