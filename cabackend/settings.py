@@ -161,10 +161,6 @@ CELERY_ROUTES = {
 }
 CELERYD_PREFETCH_MULTIPLIER = 64
 
-# Cache
-CACHE_FILE = "/home/andraz/Projects/cabackend/mqtt/helpers/cache.csv"
-TMP_CACHE_FILE = "/home/andraz/Projects/cabackend/mqtt/helpers/tmp_cache.csv"
-
 # Import local settings
 try:
     from .local_settings import *
