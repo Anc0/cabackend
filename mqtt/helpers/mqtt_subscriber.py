@@ -56,7 +56,7 @@ class MqttClient:
             self.complete_seance(user_rfid)
         elif topic == 'dump':
             logger.info("Dumping data from buffer...")
-            insert_data_from_buffer.delay(self.cache)
+            insert_data_from_buffer.delay(self.cache.dump_buffer())
         else:
             if self.seance:
                 try:

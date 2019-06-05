@@ -13,6 +13,8 @@ class CacheManagement:
         self.buffer.append((timestamp, topic, value, seance_id))
 
     def dump_buffer(self):
-        tmp_buffer = self.buffer
-        self.buffer = []
+        tmp_buffer = self.buffer.copy()
+        print("Buffer size: {}".format(len(self.buffer)))
+        self.buffer.clear()
+        print("Buffer size: {}".format(len(self.buffer)))
         return tmp_buffer
