@@ -28,6 +28,7 @@ class Command(BaseCommand):
             delta = (record.timestamp - prev.timestamp).microseconds / 1000
             print(delta)
             deltas.append(delta)
+            prev = record
         print("Mean: {} ms".format(round(mean(deltas))))
         print("Standard deviation: {} ms".format(round(stdev(deltas))))
 
