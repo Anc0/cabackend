@@ -28,7 +28,7 @@ class Sensor(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "Sensor {} with topic {}".format(self.name, self.topic)
+        return "Sensor {}".format(self.topic)
 
 
 class SensorRecord(models.Model):
