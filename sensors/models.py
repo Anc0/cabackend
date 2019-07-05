@@ -7,12 +7,16 @@ class Sensor(models.Model):
     TYPE_ACCELEROMETER = 'AC'
     TYPE_FORCE = 'FO'
     TYPE_MICROPHONE = 'MI'
+    TYPE_PIR = 'PI'
+    TYPE_HALL = 'HA'
     TYPE_UNDEFINED = 'UN'
 
     TYPES = (
         (TYPE_ACCELEROMETER, 'Accelerometer'),
         (TYPE_FORCE, 'Force sensor'),
         (TYPE_MICROPHONE, 'Microphone'),
+        (TYPE_PIR, 'Passive IR'),
+        (TYPE_HALL, 'Hall'),
         (TYPE_UNDEFINED, 'Undefined'),
     )
 
