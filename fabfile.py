@@ -18,7 +18,8 @@ def production():
     env.requirements = 'requirements.txt'
     env.local_settings = 'conf/conf.production.local_settings.py'
     env.supervisor_mqtt_file = 'supervisor.conf.production.mqttworker'
-    env.supervisor_data_file = 'supervisor.conf.production.dataworker'
+    env.supervisor_data_a_file = 'supervisor.conf.production.dataworker-a'
+    env.supervisor_data_b_file = 'supervisor.conf.production.dataworker-b'
     env.supervisor_buffer_file = 'supervisor.conf.production.bufferworker'
     env.supervisor_beat_file = 'supervisor.conf.production.celerybeat'
     env.supervisor_webapp_file = 'supervisor.conf.production.webapp'
@@ -94,14 +95,16 @@ def install_supervisor():
     """
     with cd('%(project_folder)s/source/conf' % env):
         sudo('cp %(supervisor_mqtt_file)s /etc/supervisor/conf.d/startmqtt.conf' % env)
-        sudo('cp %(supervisor_data_file)s /etc/supervisor/conf.d/startdata.conf' % env)
+        sudo('cp %(supervisor_data_a_file)s /etc/supervisor/conf.d/startdata-a.conf' % env)
+        sudo('cp %(supervisor_data_b_file)s /etc/supervisor/conf.d/startdata-b.conf' % env)
         sudo('cp %(supervisor_buffer_file)s /etc/supervisor/conf.d/startbuffer.conf' % env)
         sudo('cp %(supervisor_beat_file)s /etc/supervisor/conf.d/startbeat.conf' % env)
         sudo('cp %(supervisor_webapp_file)s /etc/supervisor/conf.d/startwebapp.conf' % env)
         sudo('supervisorctl reread')
         sudo('supervisorctl update')
         sudo('supervisorctl restart cabackend-mqtt-worker')
-        sudo('supervisorctl restart cabackend-data-worker')
+        sudo('supervisorctl restart cabackend-data-worker-a')
+        sudo('supervisorctl restart cabackend-data-worker-b')
         sudo('supervisorctl restart cabackend-buffer-worker')
         sudo('supervisorctl restart cabackend-celery-beat')
         sudo('supervisorctl restart cabackend-webapp')
