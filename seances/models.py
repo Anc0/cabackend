@@ -16,6 +16,9 @@ class Seance(models.Model):
     # Flag that tells if the seance is already finished
     active = models.BooleanField(default=True)
 
+    # If there was anything extraordinary with this session, mark it here
+    notes = models.TextField(default=None, blank=True, null=True)
+
     # Times relating to database manipulation
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
