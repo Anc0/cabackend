@@ -16,6 +16,9 @@ class Seance(models.Model):
     # Flag that tells if the seance is already finished
     active = models.BooleanField(default=True)
 
+    # This field marks if the seance can be used for further analysis
+    valid = models.BooleanField(default=True)
+
     # If there was anything extraordinary with this session, mark it here
     notes = models.TextField(default=None, blank=True, null=True)
 
