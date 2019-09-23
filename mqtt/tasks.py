@@ -16,6 +16,7 @@ def insert_data_from_buffer(cache_records):
     """
     print("Processing cached records...")
     records = []
+    topics = {}
     for record in cache_records:
         # Extract data into separate variables for clarity
         timestamp = record[0]
@@ -28,9 +29,17 @@ def insert_data_from_buffer(cache_records):
         sensor, created = Sensor.objects.get_or_create(topic=topic)
         # Create and append current SensorRecord
         records.append(SensorRecord(sensor=sensor, seance=seance, value=value, timestamp=timestamp))
+        # Update topics counter
+        if topic in topics:
+            topics[topic] += 1
+        else:
+            topics[topic] = 1
     # Save all SensorRecords at once
     result = SensorRecord.objects.bulk_create(records)
     print("{} sensor records inserted.".format(len(result)))
+    if len(cache_records) > 0:
+        for k, v in zip(topics.keys(), topics.values()):
+            print("Inserted {} records with topic {}.".format(v, k))
 
 
 @shared_task
