@@ -5,6 +5,14 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+class Experiment(models.Model):
+    instructions = models.TextField()
+
+    # Times relating to database manipulation
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+
 class Seance(models.Model):
     # Start and end time of each seance
     start = models.DateTimeField()
@@ -22,6 +30,9 @@ class Seance(models.Model):
     # If there was anything extraordinary with this session, mark it here
     notes = models.TextField(default=None, blank=True, null=True)
 
+    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    try_count = models.IntegerField(default=-1)
+
     # Times relating to database manipulation
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -38,3 +49,4 @@ class Seance(models.Model):
         else:
             return "Completed seance started at: {} with user {}".format(self.start.strftime("%Y-%m-%d %H:%M:%S"),
                                                                           self.user.username)
+
