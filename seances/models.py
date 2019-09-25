@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 
 
 class Experiment(models.Model):
+    # Field that determines the sequence of experiments
+    sequence_number = models.IntegerField(unique=True)
     instructions = models.TextField()
 
     # Times relating to database manipulation
@@ -40,6 +42,12 @@ class Seance(models.Model):
     def end_seance(self):
         self.end = datetime.now(tz=pytz.UTC)
         self.active = False
+        self.save()
+
+    def iterate_experiment(self):
+        valid_seance_count = len(Seance.objects.filter(user=self.user, valid=True))
+        self.try_count = int(valid_seance_count/3) + 1
+        self.experiment = Experiment.objects.get(sequence_number=(valid_seance_count + 1) % len(Experiment.objects.all()))
         self.save()
 
     def __str__(self):

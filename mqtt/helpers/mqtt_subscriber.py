@@ -86,6 +86,7 @@ class MqttClient:
 
             seance = Seance(user=user, start=datetime.now(tz=pytz.UTC))
             seance.save()
+            seance.iterate_experiment()
 
             self.seance = seance
 
