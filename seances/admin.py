@@ -21,7 +21,7 @@ class SeanceValidFilter(admin.SimpleListFilter):
 
 
 class SeanceAdmin(admin.ModelAdmin):
-    list_display = ['start', 'end', 'user', 'valid']
+    list_display = ['start', 'end', 'user', "experiment", 'valid']
     list_filter = (SeanceValidFilter, )
 
 

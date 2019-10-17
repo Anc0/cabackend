@@ -35,7 +35,9 @@ class Seance(models.Model):
     # If there was anything extraordinary with this session, mark it here
     notes = models.TextField(default=None, blank=True, null=True)
 
-    experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE, default=None, null=True, blank=True)
+    experiment = models.ForeignKey(
+        Experiment, on_delete=models.CASCADE, default=None, null=True, blank=True
+    )
     try_count = models.IntegerField(default=-1)
 
     # Times relating to database manipulation
@@ -48,13 +50,16 @@ class Seance(models.Model):
         self.save()
 
     def iterate_experiment(self):
-        earlier_seances = Seance.objects.filter(user=self.user, created__lt=self.created).count()
+        earlier_seances = Seance.objects.filter(
+            user=self.user, created__lt=self.created, valid=True
+        ).count()
 
         try_count = int(earlier_seances / 3) + 1
         sequence_number = earlier_seances % 3 + 1
+        print("==================================")
         print(try_count)
         print(sequence_number)
-        if not self.try_count:
+        if self.try_count == -1:
             self.try_count = try_count
         if not self.experiment:
             self.experiment = Experiment.objects.get(sequence_number=sequence_number)
@@ -62,8 +67,10 @@ class Seance(models.Model):
 
     def __str__(self):
         if self.active:
-            return "Active seance started at: {} with user {}".format(self.start.strftime("%Y-%m-%d %H:%M:%S"),
-                                                                       self.user.username)
+            return "Active seance started at: {} with user {}".format(
+                self.start.strftime("%Y-%m-%d %H:%M:%S"), self.user.username
+            )
         else:
-            return "Completed seance started at: {} with user {}".format(self.start.strftime("%Y-%m-%d %H:%M:%S"),
-                                                                          self.user.username)
+            return "Completed seance started at: {} with user {}".format(
+                self.start.strftime("%Y-%m-%d %H:%M:%S"), self.user.username
+            )
