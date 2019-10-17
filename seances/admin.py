@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from seances.models import Seance
+from seances.models import Seance, Experiment
 
 
 class SeanceValidFilter(admin.SimpleListFilter):
@@ -26,3 +26,4 @@ class SeanceAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Seance, SeanceAdmin)
+admin.site.register(Experiment)
