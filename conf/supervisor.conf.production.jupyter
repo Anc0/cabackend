@@ -1,0 +1,10 @@
+[program:cabackend-jupyter]
+command = /home/akrasovec/cabackend/env/bin/jupyter notebook --no-browser --config=/home/akrasovec/cabackend/source/conf/jupyter.conf.production.py
+directory = /home/akrasovec/cabackend/source
+
+user=akrasovec
+autostart=true
+autorestart=true
+
+stdout_logfile=/var/log/supervisor/cabackend-jupyter-stdout.log
+stderr_logfile=/var/log/supervisor/cabackend-jupyter-stderr.log
