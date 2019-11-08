@@ -213,3 +213,6 @@ static/
 
 # Env file
 /cabackend/.env
+
+node_modules/
+package-lock.json
