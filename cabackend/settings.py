@@ -11,8 +11,9 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
-
 import dotenv
+
+from .local_settings import DOTENV_PATH
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,7 +28,6 @@ SECRET_KEY = "pbjdukkxg4y0egf^)ux$+ha$m2nbthot5hii=ued806+i@6k%e"
 DEBUG = False
 
 ALLOWED_HOSTS = ["localhost", "e2-iot.maas.garaza.io"]
-from .local_settings import DOTENV_PATH
 
 # Load env config
 dotenv.read_dotenv(DOTENV_PATH)
