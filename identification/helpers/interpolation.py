@@ -5,12 +5,12 @@ from scipy.interpolate import interp1d
 
 
 class LinearInterpolation:
-
     def __init__(self, data):
         """
         :param data: list of dicts wth timestamp and value attributes
         """
-        self.data = sorted(data, key=lambda x: x["timestamp"])
+        print(data)
+        self.data = sorted(data, key=lambda x: x.timestamp)
 
         self.interpolated_data = []
 
