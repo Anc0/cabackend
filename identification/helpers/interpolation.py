@@ -9,7 +9,6 @@ class LinearInterpolation:
         """
         :param data: list of dicts wth timestamp and value attributes
         """
-        print(data)
         self.data = sorted(data, key=lambda x: x.timestamp)
 
         self.interpolated_data = []
