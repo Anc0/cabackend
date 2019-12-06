@@ -5,18 +5,18 @@ from celery import Celery
 from django.conf import settings
 
 # set the default Django settings module for the 'celery' program.
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'cabackend.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cabackend.settings")
 
-BROKER_URL = os.getenv('RABBITMQ_BROKER_URL')
+BROKER_URL = os.getenv("RABBITMQ_BROKER_URL")
 
 # RABBITMQ_BROKER_URL='amqp://cabackend:fq8o34pjouhsgeo9u4iler@localhost:15672'
-app = Celery('cabackend', broker=BROKER_URL)
+app = Celery("cabackend", broker=BROKER_URL)
 
 # Using a string here means the worker doesn't have to serialize
 # the configuration object to child processes.
 # - namespace='CELERY' means all celery-related configuration keys
 #   should have a `CELERY_` prefix.
-app.config_from_object('django.conf:settings')
+app.config_from_object("django.conf:settings")
 
 # Load task modules from all registered Django app configs.
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
@@ -24,4 +24,4 @@ app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
 
 @app.task(bind=True)
 def debug_task(self):
-    print('Request: {0!r}'.format(self.request))
+    print("Request: {0!r}".format(self.request))

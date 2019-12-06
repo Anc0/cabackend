@@ -8,7 +8,7 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Starts the mqtt listener'
+    help = "Starts the mqtt listener"
 
     def add_arguments(self, parser):
         pass

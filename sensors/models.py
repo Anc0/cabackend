@@ -4,20 +4,20 @@ from seances.models import Seance
 
 
 class Sensor(models.Model):
-    TYPE_ACCELEROMETER = 'AC'
-    TYPE_FORCE = 'FO'
-    TYPE_MICROPHONE = 'MI'
-    TYPE_PIR = 'PI'
-    TYPE_HALL = 'HA'
-    TYPE_UNDEFINED = 'UN'
+    TYPE_ACCELEROMETER = "AC"
+    TYPE_FORCE = "FO"
+    TYPE_MICROPHONE = "MI"
+    TYPE_PIR = "PI"
+    TYPE_HALL = "HA"
+    TYPE_UNDEFINED = "UN"
 
     TYPES = (
-        (TYPE_ACCELEROMETER, 'Accelerometer'),
-        (TYPE_FORCE, 'Force sensor'),
-        (TYPE_MICROPHONE, 'Microphone'),
-        (TYPE_PIR, 'Passive IR'),
-        (TYPE_HALL, 'Hall'),
-        (TYPE_UNDEFINED, 'Undefined'),
+        (TYPE_ACCELEROMETER, "Accelerometer"),
+        (TYPE_FORCE, "Force sensor"),
+        (TYPE_MICROPHONE, "Microphone"),
+        (TYPE_PIR, "Passive IR"),
+        (TYPE_HALL, "Hall"),
+        (TYPE_UNDEFINED, "Undefined"),
     )
 
     # User defined sensor name
@@ -53,5 +53,6 @@ class SensorRecord(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return "Value: {}, from sensor {}, at {}".format(self.value, self.sensor.topic,
-                                                         self.timestamp.strftime("%Y-%m-%d %H:%M:%S"))
+        return "Value: {}, from sensor {}, at {}".format(
+            self.value, self.sensor.topic, self.timestamp.strftime("%Y-%m-%d %H:%M:%S")
+        )

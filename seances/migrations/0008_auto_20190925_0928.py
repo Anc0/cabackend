@@ -7,28 +7,42 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('seances', '0007_seance_valid'),
+        ("seances", "0007_seance_valid"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Experiment',
+            name="Experiment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('sequence_number', models.IntegerField(unique=True)),
-                ('instructions', models.TextField()),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('modified', models.DateTimeField(auto_now=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("sequence_number", models.IntegerField(unique=True)),
+                ("instructions", models.TextField()),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("modified", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.AddField(
-            model_name='seance',
-            name='try_count',
+            model_name="seance",
+            name="try_count",
             field=models.IntegerField(default=-1),
         ),
         migrations.AddField(
-            model_name='seance',
-            name='experiment',
-            field=models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='seances.Experiment'),
+            model_name="seance",
+            name="experiment",
+            field=models.ForeignKey(
+                blank=True,
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="seances.Experiment",
+            ),
         ),
     ]

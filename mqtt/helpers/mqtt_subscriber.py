@@ -16,11 +16,17 @@ logger = logging.getLogger(__name__)
 
 
 class MqttClient:
-
-    def __init__(self, client_id=settings.MQTT_CLIENT_ID, host_ip=settings.MQTT_HOST_IP,
-                 host_port=settings.MQTT_HOST_PORT, keepalive=settings.MQTT_KEEPALIVE, topic=settings.MQTT_TOPIC,
-                 qos=settings.MQTT_QOS, persistent=settings.MQTT_PERSISTENT,
-                 retry_first_connection=settings.MQTT_RETRY_FIRST_CONNECTION):
+    def __init__(
+        self,
+        client_id=settings.MQTT_CLIENT_ID,
+        host_ip=settings.MQTT_HOST_IP,
+        host_port=settings.MQTT_HOST_PORT,
+        keepalive=settings.MQTT_KEEPALIVE,
+        topic=settings.MQTT_TOPIC,
+        qos=settings.MQTT_QOS,
+        persistent=settings.MQTT_PERSISTENT,
+        retry_first_connection=settings.MQTT_RETRY_FIRST_CONNECTION,
+    ):
 
         self.client_id = client_id
         self.host_ip = host_ip
@@ -38,7 +44,11 @@ class MqttClient:
         logger.info("Connected with result code: {}".format(rc))
 
     def on_subscribe(self, mqttc, obj, mid, granted_qos):
-        logger.info("Subscribed to {}:{} as {}.".format(self.host_ip, self.host_port, self.client_id))
+        logger.info(
+            "Subscribed to {}:{} as {}.".format(
+                self.host_ip, self.host_port, self.client_id
+            )
+        )
 
     def on_message(self, mqttc, obj, msg):
         """
@@ -48,13 +58,13 @@ class MqttClient:
         """
         topic = msg.topic.split("/")[1]
 
-        if topic == 'activate':
+        if topic == "activate":
             user_rfid = str(msg.payload)
             self.initialize_seance(user_rfid)
-        elif topic == 'deactivate':
+        elif topic == "deactivate":
             user_rfid = str(msg.payload)
             self.complete_seance(user_rfid)
-        elif topic == 'dump':
+        elif topic == "dump":
             logger.info("Dumping data from buffer...")
             insert_data_from_buffer.delay(self.cache.dump_buffer())
         else:
@@ -62,7 +72,9 @@ class MqttClient:
                 try:
                     value = float(msg.payload)
                     # Insert the data value into ram
-                    self.cache.save_record(datetime.now(tz=pytz.UTC), topic, value, self.seance.id)
+                    self.cache.save_record(
+                        datetime.now(tz=pytz.UTC), topic, value, self.seance.id
+                    )
                 # Except general exceptions as we do not want to crash the mqtt listener at any point
                 except Exception as e:
                     logger.error(e)

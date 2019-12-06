@@ -28,7 +28,9 @@ def insert_data_from_buffer(cache_records):
         # Get or create the sensor
         sensor, created = Sensor.objects.get_or_create(topic=topic)
         # Create and append current SensorRecord
-        records.append(SensorRecord(sensor=sensor, seance=seance, value=value, timestamp=timestamp))
+        records.append(
+            SensorRecord(sensor=sensor, seance=seance, value=value, timestamp=timestamp)
+        )
         # Update topics counter
         if topic in topics:
             topics[topic] += 1
@@ -44,5 +46,11 @@ def insert_data_from_buffer(cache_records):
 
 @shared_task
 def dump_data():
-    single(topic="cabackend/dump", qos=settings.MQTT_QOS, hostname=settings.MQTT_HOST_IP, port=settings.MQTT_HOST_PORT,
-           client_id="periodic_dump", keepalive=6 * 60)
+    single(
+        topic="cabackend/dump",
+        qos=settings.MQTT_QOS,
+        hostname=settings.MQTT_HOST_IP,
+        port=settings.MQTT_HOST_PORT,
+        client_id="periodic_dump",
+        keepalive=6 * 60,
+    )

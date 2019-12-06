@@ -10,10 +10,10 @@ logger = logging.getLogger(__name__)
 
 
 class Command(BaseCommand):
-    help = 'Gives sampling frequency stats about a specific sensor.'
+    help = "Gives sampling frequency stats about a specific sensor."
 
     def add_arguments(self, parser):
-        parser.add_argument('sensor', type=str)
+        parser.add_argument("sensor", type=str)
 
     def handle(self, *args, **options):
         try:
@@ -21,7 +21,7 @@ class Command(BaseCommand):
         except Sensor.DoesNotExist:
             print("Sensor does not exist.")
 
-        records = SensorRecord.objects.filter(sensor=sensor).order_by('timestamp')
+        records = SensorRecord.objects.filter(sensor=sensor).order_by("timestamp")
         deltas = []
         prev = records[0]
         for record in records[1:]:
@@ -31,4 +31,3 @@ class Command(BaseCommand):
             prev = record
         print("Mean: {} ms".format(round(mean(deltas))))
         print("Standard deviation: {} ms".format(round(stdev(deltas))))
-

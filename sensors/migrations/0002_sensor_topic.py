@@ -6,14 +6,14 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0001_initial'),
+        ("sensors", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sensor',
-            name='topic',
-            field=models.CharField(default='DELETE ME', max_length=255, unique=True),
+            model_name="sensor",
+            name="topic",
+            field=models.CharField(default="DELETE ME", max_length=255, unique=True),
             preserve_default=False,
         ),
     ]

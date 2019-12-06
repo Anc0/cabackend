@@ -6,19 +6,19 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0002_sensor_topic'),
+        ("sensors", "0002_sensor_topic"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='sensorrecord',
-            name='value',
+            model_name="sensorrecord",
+            name="value",
             field=models.FloatField(default=0),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='sensor',
-            name='name',
-            field=models.CharField(default='Unnamed sensor', max_length=255),
+            model_name="sensor",
+            name="name",
+            field=models.CharField(default="Unnamed sensor", max_length=255),
         ),
     ]

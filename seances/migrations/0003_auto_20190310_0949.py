@@ -6,18 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('seances', '0002_seance_active'),
+        ("seances", "0002_seance_active"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='seance',
-            name='end',
-            field=models.DateTimeField(default=None),
+            model_name="seance", name="end", field=models.DateTimeField(default=None),
         ),
         migrations.AlterField(
-            model_name='seance',
-            name='start',
+            model_name="seance",
+            name="start",
             field=models.DateTimeField(auto_now_add=True),
         ),
     ]

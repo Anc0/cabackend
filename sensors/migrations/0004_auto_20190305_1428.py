@@ -6,13 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sensors', '0003_auto_20190305_1417'),
+        ("sensors", "0003_auto_20190305_1417"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='sensor',
-            name='type',
-            field=models.CharField(choices=[('AC', 'Accelerometer'), ('FO', 'Force sensor'), ('MI', 'Microphone'), ('UN', 'Undefined')], default='UN', max_length=2),
+            model_name="sensor",
+            name="type",
+            field=models.CharField(
+                choices=[
+                    ("AC", "Accelerometer"),
+                    ("FO", "Force sensor"),
+                    ("MI", "Microphone"),
+                    ("UN", "Undefined"),
+                ],
+                default="UN",
+                max_length=2,
+            ),
         ),
     ]
