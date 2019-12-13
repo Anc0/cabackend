@@ -1,0 +1,4 @@
+round_epochs,val_loss,loss,activation,batch_size,dropout,epochs,losses,optimizer
+50,0.878623466595172,0.9606198604909133,relu,64,0,50,mean_absolute_error,Adam
+30,0.8594782048428792,0.9421320280530229,elu,1,0,30,mean_absolute_error,Adam
+50,0.8731811449713129,0.9625033223162062,elu,64,0.25,50,mean_absolute_error,Nadam

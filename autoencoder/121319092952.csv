@@ -1,0 +1,8 @@
+round_epochs,val_loss,loss,activation,batch_size,dropout,epochs,losses,optimizer
+30,0.9233405200956527,1.0045370864328094,linear,64,0,30,mean_absolute_error,SGD
+10,0.8666351117449687,0.9495619461186486,relu,1,0,10,mean_absolute_error,Adagrad
+10,0.9224160608934882,1.0091699987382696,softsign,64,0.25,10,mean_absolute_error,RMSprop
+10,0.8809775230466349,0.9635458006618044,selu,64,0,10,mean_absolute_error,Adagrad
+10,0.9177162273236252,0.9997468600159493,sigmoid,1,0.25,10,mean_absolute_error,Adagrad
+30,0.9224333336297255,1.0091007538368366,tanh,256,0.25,30,mean_absolute_error,Adamax
+30,0.9203270598841834,1.0002452250132305,softmax,1,0,30,mean_absolute_error,Adagrad

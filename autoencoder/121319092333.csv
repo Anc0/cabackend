@@ -1,0 +1,8 @@
+round_epochs,val_loss,loss,activation,batch_size,dropout,epochs,losses,optimizer
+10,0.9250260375938623,1.0085572911186453,elu,256,0,10,mean_absolute_error,RMSprop
+50,0.8693267169524705,0.9580029502489928,elu,64,0.25,50,mean_absolute_error,RMSprop
+30,0.9062351877607445,1.0064995338636618,elu,256,0.25,30,mean_absolute_error,RMSprop
+10,0.9157924541081917,1.0073604023979768,elu,64,0.25,10,mean_absolute_error,RMSprop
+10,1.3115181791415913,1.3949456792105026,elu,256,0,10,mean_absolute_error,SGD
+30,1.307241640944593,1.3908562771606805,softmax,256,0,30,mean_absolute_error,SGD
+10,1.308447763458514,1.389004730514447,elu,256,0.25,10,mean_absolute_error,SGD

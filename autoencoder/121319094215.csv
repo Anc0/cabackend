@@ -1,0 +1,5 @@
+round_epochs,val_loss,loss,activation,batch_size,dropout,epochs,losses,optimizer
+10,1.30408351783511,1.3885636393221665,elu,256,0,10,mean_absolute_error,SGD
+10,0.9143381222247216,1.0037054346101697,elu,256,0,10,mean_absolute_error,RMSprop
+10,0.8773177562527372,0.9609351901864038,elu,256,0,10,mean_absolute_error,Adagrad
+10,0.9230599712721909,1.0028848055681567,elu,256,0,10,mean_absolute_error,Adadelta

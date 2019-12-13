@@ -1,0 +1,4 @@
+round_epochs,val_loss,loss,activation,batch_size,dropout,epochs,losses,optimizer
+10,0.9129386133569921,1.009758298494952,elu,256,0,10,mean_absolute_error,Adam
+50,0.9491232036466409,1.02895797095022,linear,64,0,50,mean_absolute_error,SGD
+50,0.9165478815437441,0.9956216634219972,softsign,64,0,50,mean_absolute_error,Adam
