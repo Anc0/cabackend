@@ -941,7 +941,7 @@ class CsvDataHandler:
                 results.update(
                     {
                         "{}_{}".format(
-                            str(experiment).zfill(2), str(interval).zfill(2)
+                            str(experiment).zfill(2), str(interval).zfill(3)
                         ): data.groupby("seance", as_index=False)
                         .apply(get_n_rows_f(interval))
                         .reset_index()

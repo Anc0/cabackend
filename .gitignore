@@ -216,3 +216,5 @@ static/
 
 node_modules/
 package-lock.json
+
+results*.py
