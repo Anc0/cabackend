@@ -116,6 +116,9 @@ class PerSeanceClassification:
         self.grid_gradient = grid_gradient
 
     def run(self, max_running_time=timedelta(hours=6)):
+        """
+        Function that gets called by the results generation framework.
+        """
         (
             random_params,
             grid_params,
@@ -156,6 +159,9 @@ class PerSeanceClassification:
         epochs=5000,
         iterations=100,
     ):
+        """
+        Calculate results for given parameters and return them.
+        """
         s = datetime.now()
         random_params = [[] for _ in range(len(models))]
         grid_params = [[] for _ in range(len(models))]

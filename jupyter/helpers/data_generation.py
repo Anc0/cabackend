@@ -1,6 +1,7 @@
 from datetime import timedelta, datetime
 from math import sqrt
 
+from IPython.core.display import clear_output
 from django.db.models import Q
 from numpy import mean, std, array
 from numpy.fft import fft, fftfreq
@@ -118,16 +119,17 @@ class CsvDataHandler:
         self.file_name_template = file_name_template
 
     # GENERATING CSV DATA
-    def generate_csv_data(self, seance_ids, task=1, seconds=1):
+    def generate_csv_data(self, seance_ids, task, seconds):
         """
         Generate csv file with calculated features, from data subsampled to the given time interval.
         """
+        clear_output()
         step = timedelta(seconds=seconds)
         seances = Seance.objects.filter(id__in=seance_ids).order_by("start")
 
         print(
-            "Generating segmented data csv file with {} seconds intervals for {} seances.".format(
-                seconds, seances.count()
+            "Generating segmented data csv file with {} seconds intervals (task {}) for {} seances.".format(
+                seconds, task, seances.count()
             )
         )
 
@@ -256,7 +258,7 @@ class CsvDataHandler:
             )
             pir_data = self._load_data(seance.id, "pir")
 
-            i = 0
+            i = 1
             while start < end:
                 sub_data = []
                 for x in data:
@@ -461,8 +463,10 @@ class CsvDataHandler:
 
                 start += step
                 i += 1
-                if i % 15 == 0:
-                    print(i)
+            print(
+                "Processed {} {} seconds chunks for task {}.".format(i, seconds, task)
+            )
+
         df = DataFrame(resulting_data)
         df.to_csv(file_name, index=False)
 
@@ -884,18 +888,14 @@ class CsvDataHandler:
         """
         import numpy as np
 
-        data_1 = read_csv(self.data_dir + self.file_name_template.format(1, 1)).fillna(
-            0
-        )
-        data_2 = read_csv(self.data_dir + self.file_name_template.format(1, 2)).fillna(
-            0
-        )
-        data_3 = read_csv(self.data_dir + self.file_name_template.format(1, 3)).fillna(
-            0
-        )
+        datasets = [
+            read_csv(self.data_dir + self.file_name_template.format(s, t)).fillna(0)
+            for s in time_intervals
+            for t in [1, 2, 3]
+        ]
 
-        datasets = [data_1, data_2, data_3]
-        for i in range(len(datasets)):
+        # Calculate magnitude bins
+        for i, _ in enumerate(datasets):
             for col in [
                 "ax_bin",
                 "ay_bin",
@@ -924,32 +924,17 @@ class CsvDataHandler:
                 datasets[i]["{}_std".format(col)] = std(bins, axis=0)
         datasets = [x.fillna(0) for x in datasets]
 
-        def get_n_rows_f(seconds):
-            def take_n_rows(df):
-                indices = [x // seconds for x in range(len(df))]
-                df.insert(df.shape[1], "grouping", indices)
-                df = df.groupby("grouping", as_index=False).mean().reset_index()
-                df = df.drop("grouping", axis=1)
-                return df
-
-            return take_n_rows
-
         results = {}
-        experiment = 1
+        task = 0
         for data in datasets:
-            for interval in time_intervals:
-                results.update(
-                    {
-                        "{}_{}".format(
-                            str(experiment).zfill(2), str(interval).zfill(3)
-                        ): data.groupby("seance", as_index=False)
-                        .apply(get_n_rows_f(interval))
-                        .reset_index()
-                        .drop("level_0", axis=1)
-                        .drop("level_1", axis=1)
-                        .drop("index", axis=1)
-                    }
-                )
-            experiment += 1
+            results.update(
+                {
+                    "{}_{}".format(
+                        str(task % 3 + 1).zfill(2),
+                        str(time_intervals[task // 3]).zfill(3),
+                    ): data
+                }
+            )
+            task += 1
 
         return results

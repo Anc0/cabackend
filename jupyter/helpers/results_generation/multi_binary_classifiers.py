@@ -531,9 +531,10 @@ class PerSeanceClassification:
         self.params = params
 
     def run(self, max_running_time=timedelta(hours=6)):
+        """
+        Function that gets called by the results generation framework.
+        """
         keys, scores, stats = self.get_results(self.data, max_running_time)
-        ################### TESTING ONLY ###################
-        ####################################################
         return (
             'from plotly import graph_objects as go\nfig = go.Figure(data=[go.Bar(x={}, y={}, name="Task 1")])\nfig.upd'
             'ate_layout(xaxis_type="category")\nfig.show()'.format(keys, scores),
@@ -543,6 +544,9 @@ class PerSeanceClassification:
     def get_results(
         self, data: DataFrame, max_running_time, epochs=5000, iterations=100,
     ):
+        """
+        Calculate results for given parameters and return them.
+        """
         s = datetime.now()
         results = {}
         stats = {}
@@ -615,7 +619,9 @@ class PerSeanceClassification:
         search_params={},
         iterations=100,
     ):
-
+        """
+        Train separate binary models for each of the users.
+        """
         cols = list(data.columns)
 
         # Split the data
