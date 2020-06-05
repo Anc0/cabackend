@@ -22,7 +22,7 @@ cryptography==2.6.1
 cycler==0.10.0
 decorator==4.3.2
 defusedxml==0.6.0
-Django==2.2.10
+Django==2.2.13
 django-celery==3.2.2
 django-dotenv==1.4.2
 django-extensions==2.1.6
